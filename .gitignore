@@ -3,7 +3,9 @@ node_modules
 .env.local
 .env*.local
 
-# Admin-managed content (regenerated on first run from lib/products.js seed)
-data/products.json
-public/uploads/*
-!public/uploads/.gitkeep
+# NOTE: data/products.json IS tracked. The store reads from this file on every
+# request — it must ship with the deployment so Vercel/serverless reads work.
+# Run admin locally → make catalog edits → commit data/products.json → deploy.
+
+# NOTE: public/uploads/ IS tracked. Admin-uploaded images live there and need
+# to be present in the deployment bundle for the storefront to serve them.

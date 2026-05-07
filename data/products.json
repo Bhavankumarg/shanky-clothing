@@ -1,0 +1,525 @@
+{
+  "products": [
+    {
+      "slug": "blue-lenin-shirt",
+      "name": "Blue Lenin Shirt",
+      "price": 1299,
+      "originalPrice": 1599,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": "Best Seller",
+      "colors": [
+        "Blue",
+        "white",
+        "black"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "material": "",
+      "care": "",
+      "description": "",
+      "images": [
+        "/uploads/1778157684812-screenshot-2026-05-07-at-6.11.17-pm.png"
+      ]
+    },
+    {
+      "slug": "ak-edition",
+      "name": "Ak edition",
+      "price": 1499,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": "Best Seller",
+      "colors": [
+        "Default"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "material": "",
+      "care": "",
+      "description": "",
+      "images": [
+        "https://i.pinimg.com/736x/98/fd/f8/98fdf8a215989fd553283ffb7a9d4eae.jpg"
+      ],
+      "originalPrice": 2499
+    },
+    {
+      "slug": "black-lenin-shirt",
+      "name": "Black lenin shirt",
+      "price": 1499,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": "Best Seller",
+      "colors": [
+        "black"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "material": "",
+      "care": "",
+      "description": "test description",
+      "images": [
+        "/uploads/1778154367326-whatsapp-image-2026-05-05-at-15.09.08.jpeg"
+      ],
+      "originalPrice": 1899
+    },
+    {
+      "slug": "oversized-linen-coat",
+      "name": "Oversized Linen Topcoat",
+      "price": 12499,
+      "category": "Outerwear",
+      "gender": "Men",
+      "badge": "New",
+      "colors": [
+        "Stone",
+        "Charcoal",
+        "Sand"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "material": "Belgian Linen · 320gsm",
+      "care": "Cold wash · Hang dry · Iron low",
+      "description": "A heavyweight overcoat for the in-between seasons. Architectural shoulder, raw-edge lapels, single horn-button closure. Cut from Belgian linen that breaks in beautifully over years.",
+      "images": [
+        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542621334-a254cf47733d?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": 17999
+    },
+    {
+      "slug": "silk-camp-shirt",
+      "name": "Silk Camp Shirt",
+      "price": 5499,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": null,
+      "colors": [
+        "Ink",
+        "Sand",
+        "Olive"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "material": "Mulberry Silk",
+      "care": "Dry clean · Cool iron from inside",
+      "description": "Open-collar camp shirt with relaxed shoulder, cut from mulberry silk that drapes the way good silk should. Holiday-ready; just as right with denim on a Tuesday.",
+      "images": [
+        "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1622445275576-721325763afe?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1492447166138-50c3889fccb1?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": 7999
+    },
+    {
+      "slug": "oxford-shirt",
+      "name": "Oxford Cotton Shirt",
+      "price": 4499,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": "New",
+      "colors": [
+        "White",
+        "Sky",
+        "Ecru"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "material": "Long-staple Oxford cotton",
+      "care": "Machine wash cold · Iron warm",
+      "description": "The button-down you reach for. Long-staple Oxford cotton, single-needle seams, mother-of-pearl buttons, a rear locker loop. Wears in like a friend.",
+      "images": [
+        "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1492447166138-50c3889fccb1?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "linen-long-sleeve",
+      "name": "Relaxed Linen Shirt",
+      "price": 5799,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": "New",
+      "colors": [
+        "Bone",
+        "Stone",
+        "Olive",
+        "Indigo"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "material": "Belgian linen · 180gsm",
+      "care": "Cold wash · Hang dry · Iron damp",
+      "description": "A long-sleeve linen shirt cut for slow afternoons. Open placket, relaxed shoulder, finished hem. Wrinkles are part of the agreement.",
+      "images": [
+        "https://images.unsplash.com/photo-1605908502724-9093a79a1b39?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "mandarin-collar-shirt",
+      "name": "Mandarin Collar Shirt",
+      "price": 4999,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": null,
+      "colors": [
+        "Black",
+        "Bone",
+        "Charcoal"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "material": "Cotton · Tencel blend",
+      "care": "Machine wash cold · Tumble low",
+      "description": "A band-collar shirt that swaps a tie for nothing. Concealed placket, slightly tapered body, deep yoke. Worn as a layer or alone — never the same twice.",
+      "images": [
+        "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1622445275576-721325763afe?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "tuxedo-shirt",
+      "name": "Pleated Tuxedo Shirt",
+      "price": 7999,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": "Best Seller",
+      "colors": [
+        "White",
+        "Ivory"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "material": "Egyptian cotton · 80gsm poplin",
+      "care": "Dry clean · Hand-press the bib",
+      "description": "Front bib in micro-pleats, French cuffs, hidden placket. Dressed up with a black-tie suit; dressed down with selvedge denim and a cashmere knit. The shirt that earns its keep twice.",
+      "images": [
+        "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1622445275576-721325763afe?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1492447166138-50c3889fccb1?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "workshirt",
+      "name": "Brushed Cotton Workshirt",
+      "price": 4799,
+      "category": "Shirts",
+      "gender": "Men",
+      "badge": null,
+      "colors": [
+        "Olive",
+        "Slate",
+        "Indigo"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "material": "Brushed organic cotton · 240gsm",
+      "care": "Machine wash cold · Hang dry",
+      "description": "Two chest pockets, reinforced shoulders, a hem long enough to tuck. The shirt for the days that need a shirt that means it.",
+      "images": [
+        "https://images.unsplash.com/photo-1607435097405-db48f377bff6?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1545241047-6083a3684587?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "raw-edge-blazer",
+      "name": "Raw Edge Blazer",
+      "price": 14999,
+      "category": "Tailoring",
+      "gender": "Men",
+      "badge": "Best Seller",
+      "colors": [
+        "Onyx",
+        "Bone"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "material": "Wool · Cashmere blend",
+      "care": "Dry clean · Steam press",
+      "description": "Deconstructed tailoring at its quietest. Boxy shoulder, unfinished hem, hidden inner tab. Built in a Bengaluru atelier from Italian wool-cashmere.",
+      "images": [
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1492447166138-50c3889fccb1?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542621334-a254cf47733d?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": 19999
+    },
+    {
+      "slug": "pleated-trouser",
+      "name": "Pleated Wide Trouser",
+      "price": 6499,
+      "category": "Trousers",
+      "gender": "Men",
+      "badge": null,
+      "colors": [
+        "Charcoal",
+        "Stone",
+        "Olive"
+      ],
+      "sizes": [
+        "28",
+        "30",
+        "32",
+        "34",
+        "36",
+        "38"
+      ],
+      "material": "Tencel · Linen",
+      "care": "Machine wash cold · Hang dry",
+      "description": "Double-pleat front, deep pockets, column-cut leg. Drapes the length of the leg without weight. The trouser you reach for when nothing else feels right.",
+      "images": [
+        "https://images.unsplash.com/photo-1604644401890-0bd678c83788?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "cashmere-knit",
+      "name": "Boxy Cashmere Knit",
+      "price": 9299,
+      "category": "Knitwear",
+      "gender": "Men",
+      "badge": "New",
+      "colors": [
+        "Camel",
+        "Charcoal",
+        "Off-white"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "material": "100% Mongolian Cashmere",
+      "care": "Hand wash · Lay flat to dry",
+      "description": "A jumper that softens with every wear. Loose body, dropped shoulder, ribbed cuffs. Worn solo or under tailoring.",
+      "images": [
+        "https://i.pinimg.com/736x/b4/82/45/b48245b72caf378b12ae4239e84041ff.jpg",
+        "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1606293926249-ed22a78f9e76?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "leather-loafer",
+      "name": "Sculpted Leather Loafer",
+      "price": 11499,
+      "category": "Footwear",
+      "gender": "Men",
+      "badge": null,
+      "colors": [
+        "Cognac",
+        "Black"
+      ],
+      "sizes": [
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "material": "Vegetable-tanned leather",
+      "care": "Polish monthly · Store with tree",
+      "description": "Hand-lasted in Tuscany. Sculpted toe, leather sole, no logo, no shouting. Just a loafer that gets better with age.",
+      "images": [
+        "https://images.unsplash.com/photo-1614253429340-98120bd6d753?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1582897085656-c636d006a246?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1605812860427-4024433a70fd?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1606293926249-ed22a78f9e76?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": 14999
+    },
+    {
+      "slug": "minimal-tee",
+      "name": "Heavyweight Tee",
+      "price": 1899,
+      "category": "Basics",
+      "gender": "Men",
+      "badge": "Best Seller",
+      "colors": [
+        "White",
+        "Black",
+        "Sand",
+        "Olive"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "material": "Organic Pima cotton, 240gsm",
+      "care": "Machine wash cold · Tumble low",
+      "description": "The heavyweight tee. Boxy fit, ribbed neck that holds its shape, finished in Bengaluru. The opposite of disposable.",
+      "images": [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1492447166138-50c3889fccb1?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": 2799
+    },
+    {
+      "slug": "denim-shirt",
+      "name": "Selvedge Denim Shirt",
+      "price": 5499,
+      "category": "Denim",
+      "gender": "Men",
+      "badge": null,
+      "colors": [
+        "Indigo",
+        "Bleach"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "material": "12oz Japanese selvedge denim",
+      "care": "Wash inside out · Hang dry",
+      "description": "Cut from 12oz Okayama selvedge with horn buttons and a single chest pocket. Stiff at first; broken in over months.",
+      "images": [
+        "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1604176354204-9268737828e4?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "lounge-pant",
+      "name": "Cotton Lounge Pant",
+      "price": 4299,
+      "category": "Loungewear",
+      "gender": "Men",
+      "badge": "New",
+      "colors": [
+        "Sand",
+        "Slate",
+        "Black"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "material": "Brushed organic cotton",
+      "care": "Machine wash · Tumble low",
+      "description": "A drawstring lounge pant that earns its place outside the house too. Tapered leg, deep pockets, no logo. Made for slow mornings, long flights, longer Sundays.",
+      "images": [
+        "https://images.unsplash.com/photo-1551803091-e20673f15770?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542621334-a254cf47733d?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": null
+    },
+    {
+      "slug": "wool-topcoat",
+      "name": "Italian Wool Topcoat",
+      "price": 22999,
+      "category": "Outerwear",
+      "gender": "Men",
+      "badge": "Best Seller",
+      "colors": [
+        "Camel",
+        "Charcoal",
+        "Black"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "material": "Italian virgin wool · 480gsm",
+      "care": "Dry clean · Steam press",
+      "description": "A long, single-breasted topcoat with notch lapels and a half-belted back. Cut from Loro Piana virgin wool. Built for ten winters.",
+      "images": [
+        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542621334-a254cf47733d?w=900&q=85&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1606293926249-ed22a78f9e76?w=900&q=85&auto=format&fit=crop"
+      ],
+      "originalPrice": 29999
+    }
+  ]
+}
