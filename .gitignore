@@ -1,1 +1,9 @@
 node_modules
+.next
+.env.local
+.env*.local
+
+# Admin-managed content (regenerated on first run from lib/products.js seed)
+data/products.json
+public/uploads/*
+!public/uploads/.gitkeep

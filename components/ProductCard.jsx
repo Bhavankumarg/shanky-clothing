@@ -1,11 +1,13 @@
 'use client'
 import Link from 'next/link'
-import { formatPrice } from '@/lib/products'
+import { formatPrice, hasDiscount, discountPercent } from '@/lib/products'
 import { useCart } from './CartContext'
 import SafeImg from './SafeImg'
 
 export default function ProductCard({ product, delay = 0 }) {
   const { addItem } = useCart()
+  const onSale = hasDiscount(product)
+
   return (
     <div
       className="product-card reveal relative overflow-hidden cursor-none group"
@@ -18,8 +20,9 @@ export default function ProductCard({ product, delay = 0 }) {
           fallbackKey={product.slug}
           className="card-img w-full h-full object-cover absolute inset-0"
         />
-        {product.badge && (
-          <div className="card-badge">{product.badge}</div>
+        {product.badge && <div className="card-badge">{product.badge}</div>}
+        {onSale && (
+          <div className="card-discount-chip">−{discountPercent(product)}%</div>
         )}
         <div
           className="card-info absolute bottom-0 left-0 right-0 z-10"
@@ -38,8 +41,11 @@ export default function ProductCard({ product, delay = 0 }) {
           >
             {product.name}
           </div>
-          <div style={{ fontSize: '0.78rem', color: '#d4c5a9', marginTop: 4, letterSpacing: '0.15em' }}>
-            {formatPrice(product.price)}
+          <div className="card-price-row">
+            <span className="card-price">{formatPrice(product.price)}</span>
+            {onSale && (
+              <span className="card-price-original">{formatPrice(product.originalPrice)}</span>
+            )}
           </div>
         </div>
       </Link>

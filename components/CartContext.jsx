@@ -40,6 +40,10 @@ export function CartProvider({ children }) {
           slug: product.slug,
           name: product.name,
           price: product.price,
+          originalPrice:
+            product.originalPrice && product.originalPrice > product.price
+              ? product.originalPrice
+              : null,
           image: product.images[0],
           size,
           color,
@@ -67,6 +71,11 @@ export function CartProvider({ children }) {
   const clear = useCallback(() => setItems([]), [])
 
   const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0)
+  const mrpTotal = items.reduce(
+    (sum, i) => sum + (i.originalPrice || i.price) * i.qty,
+    0
+  )
+  const savings = Math.max(0, mrpTotal - subtotal)
   const count = items.reduce((sum, i) => sum + i.qty, 0)
 
   return (
@@ -78,6 +87,8 @@ export function CartProvider({ children }) {
         updateQty,
         clear,
         subtotal,
+        mrpTotal,
+        savings,
         count,
         drawerOpen,
         setDrawerOpen,

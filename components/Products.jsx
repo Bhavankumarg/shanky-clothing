@@ -2,9 +2,8 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import ProductCard from './ProductCard'
-import { products } from '@/lib/products'
 
-export default function Products() {
+export default function Products({ products = [] }) {
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export default function Products() {
     const reveals = sectionRef.current?.querySelectorAll('.reveal')
     reveals?.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
-  }, [])
+  }, [products])
 
   const featured = products.slice(0, 3)
 

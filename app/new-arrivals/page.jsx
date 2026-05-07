@@ -1,21 +1,11 @@
-'use client'
-import { useEffect } from 'react'
 import PageHeader from '@/components/PageHeader'
-import ProductCard from '@/components/ProductCard'
-import { products } from '@/lib/products'
+import NewArrivalsClient from '@/components/NewArrivalsClient'
+import { getNewArrivals } from '@/lib/productStore'
 
-export default function NewArrivalsPage() {
-  const fresh = products.filter((p) => p.badge === 'New').concat(products.slice(0, 6)).slice(0, 8)
+export const dynamic = 'force-dynamic'
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('visible')),
-      { threshold: 0.08 }
-    )
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el))
-    return () => obs.disconnect()
-  }, [])
-
+export default async function NewArrivalsPage() {
+  const products = await getNewArrivals(12)
   return (
     <>
       <PageHeader
@@ -30,11 +20,7 @@ export default function NewArrivalsPage() {
           ✦ Free overnight shipping on all New Arrivals · this week only ✦
         </span>
       </div>
-      <div className="collection-grid">
-        {fresh.map((p, i) => (
-          <ProductCard key={p.slug + i} product={p} delay={i * 60} />
-        ))}
-      </div>
+      <NewArrivalsClient products={products} />
     </>
   )
 }

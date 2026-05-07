@@ -47,6 +47,7 @@ export async function POST(req) {
       subtotal: Number(totals?.subtotal || 0),
       shipping: Number(totals?.shipping || 0),
       total: Number(totals?.total || 0),
+      savings: Number(totals?.savings || 0),
     },
     etaText,
   })

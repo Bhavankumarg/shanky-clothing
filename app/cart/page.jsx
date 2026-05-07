@@ -5,7 +5,7 @@ import { useCart } from '@/components/CartContext'
 import { formatPrice } from '@/lib/products'
 
 export default function CartPage() {
-  const { items, removeItem, updateQty, subtotal, hydrated } = useCart()
+  const { items, removeItem, updateQty, subtotal, savings, hydrated } = useCart()
   const [promo, setPromo] = useState('')
   const [applied, setApplied] = useState(null)
   const [promoMsg, setPromoMsg] = useState('')
@@ -99,12 +99,22 @@ export default function CartPage() {
                 </button>
               </div>
               <div style={{ textAlign: 'right' }}>
+                {it.originalPrice && it.originalPrice > it.price && (
+                  <s style={{ display: 'block', fontSize: '0.78rem', color: '#9c9080', letterSpacing: '0.08em' }}>
+                    {formatPrice(it.originalPrice * it.qty)}
+                  </s>
+                )}
                 <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.4rem', letterSpacing: '0.1em' }}>
                   {formatPrice(it.price * it.qty)}
                 </span>
                 {it.qty > 1 && (
                   <p style={{ fontSize: '0.7rem', color: '#7a7060', marginTop: 4 }}>
                     {formatPrice(it.price)} each
+                  </p>
+                )}
+                {it.originalPrice && it.originalPrice > it.price && (
+                  <p style={{ fontSize: '0.68rem', color: '#c94f2a', marginTop: 4, letterSpacing: '0.08em' }}>
+                    Save {formatPrice((it.originalPrice - it.price) * it.qty)}
                   </p>
                 )}
               </div>
@@ -128,6 +138,18 @@ export default function CartPage() {
         <aside className="summary-card">
           <p className="section-label" style={{ marginBottom: 18 }}>Order Summary</p>
 
+          {savings > 0 && (
+            <>
+              <div className="summary-row">
+                <span>MRP Total</span>
+                <span><s style={{ color: '#9c9080' }}>{formatPrice(subtotal + savings)}</s></span>
+              </div>
+              <div className="summary-row" style={{ color: '#c94f2a' }}>
+                <span>Sale Savings</span>
+                <span>− {formatPrice(savings)}</span>
+              </div>
+            </>
+          )}
           <div className="summary-row">
             <span>Subtotal</span>
             <span>{formatPrice(subtotal)}</span>
@@ -140,7 +162,7 @@ export default function CartPage() {
           </div>
           {discount > 0 && (
             <div className="summary-row" style={{ color: '#c94f2a' }}>
-              <span>Discount ({applied})</span>
+              <span>Promo ({applied})</span>
               <span>− {formatPrice(discount)}</span>
             </div>
           )}

@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/api/verify-otp":{},"/api/send-otp":{},"/api/place-order":{}}}
+{"version":1,"functions":{"/api/admin/logout":{},"/api/admin/me":{},"/api/admin/products":{},"/api/admin/login":{},"/api/admin/products/[slug]":{},"/api/admin/upload":{},"/admin/dashboard/new":{},"/api/verify-otp":{},"/admin/dashboard":{},"/admin":{},"/admin/dashboard/edit/[slug]":{},"/api/send-otp":{},"/api/place-order":{},"/collection/[slug]":{},"/collection":{},"/new-arrivals":{},"/":{}}}

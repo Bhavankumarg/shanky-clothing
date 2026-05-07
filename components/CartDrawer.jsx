@@ -5,7 +5,7 @@ import { useCart } from './CartContext'
 import { formatPrice } from '@/lib/products'
 
 export default function CartDrawer() {
-  const { items, drawerOpen, setDrawerOpen, removeItem, updateQty, subtotal, count } = useCart()
+  const { items, drawerOpen, setDrawerOpen, removeItem, updateQty, subtotal, savings, count } = useCart()
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? 'hidden' : ''
@@ -65,8 +65,13 @@ export default function CartDrawer() {
                     >
                       {it.name}
                     </Link>
-                    <span style={{ fontSize: '0.78rem', color: '#0a0a0a' }}>
-                      {formatPrice(it.price * it.qty)}
+                    <span className="cart-item-price-stack">
+                      {it.originalPrice && it.originalPrice > it.price && (
+                        <s className="cart-item-mrp">{formatPrice(it.originalPrice * it.qty)}</s>
+                      )}
+                      <span style={{ fontSize: '0.82rem', color: '#0a0a0a' }}>
+                        {formatPrice(it.price * it.qty)}
+                      </span>
                     </span>
                   </div>
                   <div className="cart-item-meta">
@@ -90,11 +95,22 @@ export default function CartDrawer() {
 
         {items.length > 0 && (
           <div className="cart-foot">
+            {savings > 0 && (
+              <div className="cart-foot-row cart-foot-savings">
+                <span>You save</span>
+                <span>− {formatPrice(savings)}</span>
+              </div>
+            )}
             <div className="cart-foot-row">
               <span>Subtotal</span>
               <span>{formatPrice(subtotal)}</span>
             </div>
-            <p className="cart-foot-note">Shipping & taxes calculated at checkout.</p>
+            <p className="cart-foot-note">
+              {savings > 0
+                ? `Saving ${formatPrice(savings)} vs. MRP · `
+                : ''}
+              Shipping &amp; taxes calculated at checkout.
+            </p>
             <Link
               href="/checkout"
               onClick={() => setDrawerOpen(false)}

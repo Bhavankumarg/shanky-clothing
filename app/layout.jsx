@@ -1,15 +1,11 @@
 import './globals.css'
 import { CartProvider } from '@/components/CartContext'
-import Cursor from '@/components/Cursor'
-import Navbar from '@/components/Navbar'
-import CartDrawer from '@/components/CartDrawer'
-import Toast from '@/components/Toast'
-import Footer from '@/components/Footer'
+import StorefrontShell from '@/components/StorefrontShell'
 
 export const metadata = {
   title: 'Shanky — Wear Nothing Ordinary',
   description:
-    'Shanky · A Bengaluru atelier crafting quiet, considered clothing. Slow-made garments, shipped worldwide.',
+    'Shanky · A Bengaluru atelier crafting quiet, considered menswear. Slow-made garments, shipped worldwide.',
 }
 
 export default function RootLayout({ children }) {
@@ -24,12 +20,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <CartProvider>
-          <Cursor />
-          <Navbar />
-          <CartDrawer />
-          <Toast />
-          <main className="page-main">{children}</main>
-          <Footer />
+          <StorefrontShell>{children}</StorefrontShell>
         </CartProvider>
       </body>
     </html>

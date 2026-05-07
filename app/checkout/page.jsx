@@ -44,7 +44,7 @@ const validEmail = (e) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { items, subtotal, clear } = useCart()
+  const { items, subtotal, savings, clear } = useCart()
   const shipping = subtotal === 0 ? 0 : subtotal >= 4999 ? 0 : 199
   const total = subtotal + shipping
 
@@ -198,7 +198,7 @@ export default function CheckoutPage() {
               pincode: form.pincode,
             },
             payment: PAY_LABEL[payMethod] || 'Online',
-            totals: { subtotal, shipping, total },
+            totals: { subtotal, shipping, total, savings },
           }),
         })
         const data = await res.json()
@@ -639,11 +639,27 @@ export default function CheckoutPage() {
                     {it.color} · {it.size} · ×{it.qty}
                   </div>
                 </div>
-                <span style={{ fontSize: '0.82rem' }}>{formatPrice(it.price * it.qty)}</span>
+                <span className="mini-item-price">
+                  {it.originalPrice && it.originalPrice > it.price && (
+                    <s style={{ display: 'block', fontSize: '0.7rem', color: '#9c9080' }}>
+                      {formatPrice(it.originalPrice * it.qty)}
+                    </s>
+                  )}
+                  <span style={{ fontSize: '0.82rem' }}>{formatPrice(it.price * it.qty)}</span>
+                </span>
               </div>
             ))}
           </div>
 
+          {savings > 0 && (
+            <>
+              <div className="summary-line"><span>MRP</span><span><s style={{ color: '#9c9080' }}>{formatPrice(subtotal + savings)}</s></span></div>
+              <div className="summary-line" style={{ color: '#c94f2a' }}>
+                <span>Sale Savings</span>
+                <span>− {formatPrice(savings)}</span>
+              </div>
+            </>
+          )}
           <div className="summary-line"><span>Subtotal</span><span>{formatPrice(subtotal)}</span></div>
           <div className="summary-line">
             <span>Shipping</span>
