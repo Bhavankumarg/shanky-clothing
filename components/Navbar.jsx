@@ -1,7 +1,10 @@
 'use client'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { useCart } from './CartContext'
+import { useUser } from './UserContext'
+import { useWishlist } from './WishlistContext'
 
 const navLinks = [
   { label: 'Collection', href: '/collection' },
@@ -15,6 +18,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { count, setDrawerOpen } = useCart()
+  const { user } = useUser()
+  const { count: wishCount } = useWishlist()
+  const pathname = usePathname() || ''
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -28,10 +34,21 @@ export default function Navbar() {
 
   const close = () => setMenuOpen(false)
 
-  // Light chrome (white logo/links/icons) when at top of page OR when the
-  // fullscreen dark menu is open. Dark chrome once the user scrolls past the
-  // hero — so the logo always has contrast against whatever's behind it.
-  const isLight = !scrolled || menuOpen
+  // Pages that begin with a cream/light background (no dark hero behind the
+  // navbar). On these we want the navbar to default to dark text so the logo
+  // and links read against the cream page from the very top.
+  const isLightBgPage =
+    /^\/collection\/[^/]+/.test(pathname) || // PDP
+    pathname === '/cart' ||
+    pathname === '/account' ||
+    pathname === '/checkout' ||
+    pathname === '/wishlist'
+
+  // Light chrome rules:
+  //   • menu open → always white (over the dark overlay)
+  //   • light-bg page (e.g. PDP) → never light at the top, always dark
+  //   • everywhere else → white at the top, dark after scroll
+  const isLight = menuOpen || (!isLightBgPage && !scrolled)
 
   return (
     <>
@@ -54,6 +71,34 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-5 z-[1010]">
+          <Link
+            href={user ? '/account' : '/account/login'}
+            className="account-link"
+            aria-label={user ? 'My account' : 'Sign in'}
+            title={user ? user.name : 'Sign in'}
+          >
+            {user ? (
+              <span className="account-pill">
+                <span className="account-avatar">{(user.name || user.email)[0]?.toUpperCase()}</span>
+                <span className="account-pill-name">{user.name?.split(' ')[0] || 'Account'}</span>
+              </span>
+            ) : (
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+              </svg>
+            )}
+          </Link>
+          <Link
+            href="/wishlist"
+            aria-label="Wishlist"
+            className="wishlist-btn"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            {wishCount > 0 && <span className="bag-count">{wishCount}</span>}
+          </Link>
           <button
             onClick={() => setDrawerOpen(true)}
             aria-label="Bag"
