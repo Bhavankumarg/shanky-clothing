@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { isVerified } from '@/lib/otp'
 import { sendEmail } from '@/lib/email'
 import { renderOrderEmail } from '@/lib/orderEmail'
+import { recordOrder } from '@/lib/orderStore'
+import { findCoupon } from '@/lib/couponStore'
 
 export const runtime = 'nodejs'
 
@@ -13,7 +15,7 @@ export async function POST(req) {
     return NextResponse.json({ ok: false, error: 'Invalid request body' }, { status: 400 })
   }
 
-  const { email, items, address, payment, totals } = body || {}
+  const { email, items, address, payment, totals, couponCode } = body || {}
 
   if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     return NextResponse.json({ ok: false, error: 'A valid email is required.' }, { status: 400 })
@@ -38,19 +40,50 @@ export async function POST(req) {
     d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
   const etaText = `${fmtDate(today)} – ${fmtDate(eta)}`
 
+  // Server-side coupon validation — never trust the client total alone.
+  let coupon = null
+  let discount = 0
+  if (couponCode) {
+    coupon = await findCoupon(couponCode)
+    if (coupon && coupon.active && Number(totals?.subtotal || 0) >= coupon.minSubtotal) {
+      discount = Math.round(Number(totals?.subtotal || 0) * (coupon.percent / 100))
+    } else {
+      coupon = null
+    }
+  }
+
+  const totalsFinal = {
+    subtotal: Number(totals?.subtotal || 0),
+    shipping: Number(totals?.shipping || 0),
+    total: Number(totals?.total || 0),
+    savings: Number(totals?.savings || 0),
+    discount,
+    coupon: coupon ? coupon.code : null,
+  }
+
   const html = renderOrderEmail({
     orderId,
     items,
     address,
     payment: payment || 'Online',
-    totals: {
-      subtotal: Number(totals?.subtotal || 0),
-      shipping: Number(totals?.shipping || 0),
-      total: Number(totals?.total || 0),
-      savings: Number(totals?.savings || 0),
-    },
+    totals: totalsFinal,
     etaText,
   })
+
+  // Persist the order so /account can show history and the admin can fulfil.
+  // Soft-fails on read-only filesystems — the email still goes out.
+  try {
+    await recordOrder({
+      orderId,
+      email: email.toLowerCase(),
+      items,
+      address,
+      payment: payment || 'Online',
+      totals: totalsFinal,
+      etaText,
+      status: 'placed',
+    })
+  } catch {}
 
   const result = await sendEmail({
     to: email,

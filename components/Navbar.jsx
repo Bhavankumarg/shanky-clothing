@@ -42,6 +42,7 @@ export default function Navbar() {
     pathname === '/cart' ||
     pathname === '/account' ||
     pathname === '/checkout' ||
+    pathname === '/order-confirmed' ||
     pathname === '/wishlist'
 
   // Light chrome rules:
@@ -138,9 +139,20 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="flex gap-8 justify-center mt-12">
-            {['Instagram', 'Pinterest', 'TikTok'].map((s) => (
-              <a key={s} href="#" onClick={close} className="menu-social">
-                {s}
+            {[
+              { label: 'Instagram', href: 'https://instagram.com/' },
+              { label: 'Pinterest', href: 'https://pinterest.com/' },
+              { label: 'TikTok', href: 'https://www.tiktok.com/' },
+            ].map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={close}
+                className="menu-social"
+              >
+                {s.label}
               </a>
             ))}
           </div>

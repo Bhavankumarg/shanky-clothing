@@ -8,8 +8,10 @@ export default function AdminTopbar() {
 
   const links = [
     { href: '/admin/dashboard', label: 'Products' },
-    { href: '/admin/dashboard/new', label: 'New Product' },
+    { href: '/admin/dashboard/orders', label: 'Orders' },
+    { href: '/admin/dashboard/coupons', label: 'Coupons' },
     { href: '/admin/dashboard/theme', label: 'Theme' },
+    { href: '/admin/dashboard/new', label: 'New Product' },
   ]
 
   const logout = async () => {

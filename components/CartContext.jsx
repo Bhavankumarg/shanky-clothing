@@ -1,5 +1,6 @@
 'use client'
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { events } from '@/lib/analytics'
 
 const CartContext = createContext(null)
 const STORAGE_KEY = 'void-cart-v1'
@@ -57,7 +58,11 @@ export function CartProvider({ children }) {
   }, [])
 
   const removeItem = useCallback((id) => {
-    setItems((prev) => prev.filter((i) => i.id !== id))
+    setItems((prev) => {
+      const it = prev.find((i) => i.id === id)
+      if (it) events.removeFromCart(it)
+      return prev.filter((i) => i.id !== id)
+    })
   }, [])
 
   const updateQty = useCallback((id, qty) => {

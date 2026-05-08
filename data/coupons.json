@@ -1,0 +1,25 @@
+{
+  "coupons": [
+    {
+      "code": "FIRST20",
+      "percent": 20,
+      "description": "",
+      "active": true,
+      "minSubtotal": 499
+    },
+    {
+      "code": "VOID10",
+      "percent": 10,
+      "description": "10% off · sitewide",
+      "active": true,
+      "minSubtotal": 0
+    },
+    {
+      "code": "FIRST15",
+      "percent": 15,
+      "description": "15% off your first order",
+      "active": true,
+      "minSubtotal": 0
+    }
+  ]
+}

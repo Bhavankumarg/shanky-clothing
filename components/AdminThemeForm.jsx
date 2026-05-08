@@ -3,6 +3,41 @@ import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAdminUI } from './AdminUI'
 
+const PRESETS = [
+  {
+    name: 'Atelier (default)',
+    description: 'Cream, rust, ink — the original Shanky palette.',
+    theme: {
+      cream: '#f5f0e8', cream2: '#ece4d6', black: '#0a0a0a',
+      rust: '#c94f2a', rustLight: '#e8633a', sand: '#d4c5a9', muted: '#7a7060',
+    },
+  },
+  {
+    name: 'Inkwell',
+    description: 'Near-black surfaces with bone neutrals.',
+    theme: {
+      cream: '#1d1b18', cream2: '#26221c', black: '#f4ecdf',
+      rust: '#e9a96a', rustLight: '#f6c896', sand: '#5a4f3e', muted: '#a89c83',
+    },
+  },
+  {
+    name: 'Sage',
+    description: 'Quiet greens, easy on the eye.',
+    theme: {
+      cream: '#eef0e6', cream2: '#dde2cd', black: '#1f2a1c',
+      rust: '#3f6b4a', rustLight: '#5b8b62', sand: '#b6c39c', muted: '#6e7864',
+    },
+  },
+  {
+    name: 'Editorial Mono',
+    description: 'High-contrast white + ink with a single accent.',
+    theme: {
+      cream: '#ffffff', cream2: '#f1efea', black: '#0b0b0b',
+      rust: '#0b0b0b', rustLight: '#444444', sand: '#d8d4ca', muted: '#6b6b6b',
+    },
+  },
+]
+
 const FIELDS = [
   {
     key: 'cream',
@@ -133,6 +168,31 @@ export default function AdminThemeForm({ initial, defaults }) {
 
   return (
     <form onSubmit={submit} className="admin-form admin-theme-form">
+      <div className="theme-presets" role="radiogroup" aria-label="Theme presets">
+        <p className="section-label" style={{ marginBottom: 10 }}>Presets · one click</p>
+        <div className="theme-presets-row">
+          {PRESETS.map((p) => (
+            <button
+              type="button"
+              key={p.name}
+              className="theme-preset"
+              onClick={() => setForm({ ...defaults, ...p.theme })}
+              aria-label={`Apply ${p.name} preset`}
+              title={p.description}
+            >
+              <div className="theme-preset-swatches">
+                <span style={{ background: p.theme.cream }} />
+                <span style={{ background: p.theme.black }} />
+                <span style={{ background: p.theme.rust }} />
+                <span style={{ background: p.theme.sand }} />
+              </div>
+              <strong>{p.name}</strong>
+              <span>{p.description}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="admin-form-grid">
         <div className="admin-form-col">
           {FIELDS.map((field) => {

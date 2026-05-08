@@ -3,6 +3,17 @@ import { useEffect } from 'react'
 
 export default function Cursor() {
   useEffect(() => {
+    // Skip the custom cursor (and its `cursor: none` body rule) on touch devices
+    // and when the user prefers reduced motion. Restore the native cursor in
+    // those cases so taps and tab-navigation behave as expected.
+    const noHover = window.matchMedia('(hover: none), (pointer: coarse)').matches
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (noHover || reduced) {
+      document.body.style.cursor = 'auto'
+      document.documentElement.dataset.nativeCursor = '1'
+      return
+    }
+
     const cursor = document.getElementById('cursor')
     const follower = document.getElementById('cursor-follower')
     if (!cursor || !follower) return

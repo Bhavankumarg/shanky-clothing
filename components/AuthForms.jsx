@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useUser } from './UserContext'
+import { events } from '@/lib/analytics'
 
 export default function AuthForms({ defaultMode = 'login' }) {
   const router = useRouter()
@@ -34,6 +35,8 @@ export default function AuthForms({ defaultMode = 'login' }) {
         setBusy(false)
         return
       }
+      if (mode === 'signup') events.signUp('password')
+      else events.signIn('password')
       await refresh()
       router.replace(next)
       router.refresh()

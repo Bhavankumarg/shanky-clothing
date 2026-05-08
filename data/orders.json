@@ -1,0 +1,207 @@
+{
+  "orders": [
+    {
+      "orderId": "SHK-Y6K4LG",
+      "email": "developerbhavan@gmail.com",
+      "items": [
+        {
+          "id": "blue-lenin-shirt-S-Blue",
+          "slug": "blue-lenin-shirt",
+          "name": "Blue Lenin Shirt",
+          "price": 1299,
+          "originalPrice": 1599,
+          "image": "/uploads/1778157684812-screenshot-2026-05-07-at-6.11.17-pm.png",
+          "size": "S",
+          "color": "Blue",
+          "qty": 1
+        }
+      ],
+      "address": {
+        "fullName": "Developer Bhavan",
+        "phone": "09500642143",
+        "address": "4th Floor, Phoenix Towers, Reliaable",
+        "address2": "16 & 16/1, Museum Rd",
+        "city": "BENGALURU",
+        "state": "560025",
+        "pincode": "560025"
+      },
+      "payment": "Razorpay (UPI / Card / Netbanking / Wallet)",
+      "totals": {
+        "subtotal": 1299,
+        "shipping": 199,
+        "total": 1498,
+        "savings": 300,
+        "discount": 0,
+        "coupon": null
+      },
+      "etaText": "8 May 2026 – 13 May 2026",
+      "status": "placed",
+      "createdAt": 1778224505477
+    },
+    {
+      "orderId": "SHK-889P3N",
+      "email": "developerbhavan@gmail.com",
+      "items": [
+        {
+          "id": "ak-edition-S-Default",
+          "slug": "ak-edition",
+          "name": "Ak edition",
+          "price": 1499,
+          "originalPrice": 2499,
+          "image": "https://i.pinimg.com/736x/98/fd/f8/98fdf8a215989fd553283ffb7a9d4eae.jpg",
+          "size": "S",
+          "color": "Default",
+          "qty": 1
+        }
+      ],
+      "address": {
+        "fullName": "Developer Bhavan",
+        "phone": "09500642143",
+        "address": "4th Floor, Phoenix Towers, Reliaable",
+        "address2": "16 & 16/1, Museum Rd",
+        "city": "BENGALURU",
+        "state": "560025",
+        "pincode": "560025"
+      },
+      "payment": "UPI",
+      "totals": {
+        "subtotal": 1499,
+        "shipping": 199,
+        "total": 1698,
+        "savings": 1000,
+        "discount": 0,
+        "coupon": null
+      },
+      "etaText": "8 May 2026 – 13 May 2026",
+      "status": "placed",
+      "createdAt": 1778223970807
+    },
+    {
+      "orderId": "SHK-FP1L6S",
+      "email": "developerbhavan@gmail.com",
+      "items": [
+        {
+          "id": "blue-lenin-shirt-S-Blue",
+          "slug": "blue-lenin-shirt",
+          "name": "Blue Lenin Shirt",
+          "price": 1299,
+          "originalPrice": 1599,
+          "image": "/uploads/1778157684812-screenshot-2026-05-07-at-6.11.17-pm.png",
+          "size": "S",
+          "color": "Blue",
+          "qty": 1
+        }
+      ],
+      "address": {
+        "fullName": "Developer Bhavan",
+        "phone": "09500642143",
+        "address": "4th Floor, Phoenix Towers, Reliaable",
+        "address2": "16 & 16/1, Museum Rd",
+        "city": "BENGALURU",
+        "state": "560025",
+        "pincode": "560025"
+      },
+      "payment": "UPI",
+      "totals": {
+        "subtotal": 1299,
+        "shipping": 199,
+        "total": 1498,
+        "savings": 300,
+        "discount": 0,
+        "coupon": null
+      },
+      "etaText": "8 May 2026 – 13 May 2026",
+      "status": "placed",
+      "createdAt": 1778223563190
+    },
+    {
+      "orderId": "SHK-EYN704",
+      "email": "sibi@gmail.com",
+      "items": [
+        {
+          "id": "black-lenin-shirt-S-black",
+          "slug": "black-lenin-shirt",
+          "name": "Black lenin shirt",
+          "price": 1499,
+          "originalPrice": 1899,
+          "image": "/uploads/1778154367326-whatsapp-image-2026-05-05-at-15.09.08.jpeg",
+          "size": "S",
+          "color": "black",
+          "qty": 1
+        }
+      ],
+      "address": {
+        "fullName": "Sibiraj",
+        "phone": "09500642143",
+        "address": "4th Floor, Phoenix Towers, Reliaable",
+        "address2": "16 & 16/1, Museum Rd",
+        "city": "BENGALURU",
+        "state": "560025",
+        "pincode": "560025"
+      },
+      "payment": "UPI",
+      "totals": {
+        "subtotal": 1499,
+        "shipping": 199,
+        "total": 1698,
+        "savings": 400,
+        "discount": 0,
+        "coupon": null
+      },
+      "etaText": "8 May 2026 – 13 May 2026",
+      "status": "delivered",
+      "createdAt": 1778223512651,
+      "updatedAt": 1778223883237
+    },
+    {
+      "orderId": "SHK-B56XF8",
+      "email": "developerbhavan@gmail.com",
+      "items": [
+        {
+          "id": "ak-edition-S-Default",
+          "slug": "ak-edition",
+          "name": "Ak edition",
+          "price": 1499,
+          "originalPrice": 2499,
+          "image": "https://i.pinimg.com/736x/98/fd/f8/98fdf8a215989fd553283ffb7a9d4eae.jpg",
+          "size": "S",
+          "color": "Default",
+          "qty": 2
+        },
+        {
+          "id": "blue-lenin-shirt-S-Blue",
+          "slug": "blue-lenin-shirt",
+          "name": "Blue Lenin Shirt",
+          "price": 1299,
+          "originalPrice": 1599,
+          "image": "/uploads/1778157684812-screenshot-2026-05-07-at-6.11.17-pm.png",
+          "size": "S",
+          "color": "Blue",
+          "qty": 1
+        }
+      ],
+      "address": {
+        "fullName": "Developer Bhavan",
+        "phone": "09500642143",
+        "address": "72, 60 Feet Rd, Old Madiwala, Jay Bheema Nagar, 1st Stage, BTM Layout",
+        "address2": "BENGALURU",
+        "city": "Bangalore",
+        "state": "560068",
+        "pincode": "560068"
+      },
+      "payment": "UPI",
+      "totals": {
+        "subtotal": 4297,
+        "shipping": 199,
+        "total": 4496,
+        "savings": 2300,
+        "discount": 0,
+        "coupon": null
+      },
+      "etaText": "8 May 2026 – 13 May 2026",
+      "status": "placed",
+      "createdAt": 1778223222151,
+      "updatedAt": 1778223244030
+    }
+  ]
+}

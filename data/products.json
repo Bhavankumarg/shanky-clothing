@@ -374,7 +374,7 @@
     {
       "slug": "leather-loafer",
       "name": "Sculpted Leather Loafer",
-      "price": 11499,
+      "price": 1149,
       "category": "Footwear",
       "gender": "Men",
       "badge": null,
@@ -436,7 +436,7 @@
     {
       "slug": "denim-shirt",
       "name": "Selvedge Denim Shirt",
-      "price": 5499,
+      "price": 5199,
       "category": "Denim",
       "gender": "Men",
       "badge": null,

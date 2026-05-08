@@ -1,9 +1,11 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useCart } from '@/components/CartContext'
+import { useUser } from '@/components/UserContext'
 import { formatPrice } from '@/lib/products'
+import { events } from '@/lib/analytics'
 
 const upiApps = [
   { name: 'Google Pay', short: 'GPay', bg: '#4285F4' },
@@ -31,6 +33,7 @@ const bnpl = [
 ]
 
 const PAY_LABEL = {
+  razorpay: 'Razorpay (UPI / Card / Netbanking / Wallet)',
   upi: 'UPI',
   card: 'Credit / Debit Card',
   netbanking: 'Net Banking',
@@ -40,11 +43,33 @@ const PAY_LABEL = {
   cod: 'Cash on Delivery',
 }
 
+const RAZORPAY_SCRIPT = 'https://checkout.razorpay.com/v1/checkout.js'
+
+function loadRazorpayScript() {
+  if (typeof window === 'undefined') return Promise.resolve(false)
+  if (window.Razorpay) return Promise.resolve(true)
+  return new Promise((resolve) => {
+    const existing = document.querySelector(`script[src="${RAZORPAY_SCRIPT}"]`)
+    if (existing) {
+      existing.addEventListener('load', () => resolve(!!window.Razorpay))
+      existing.addEventListener('error', () => resolve(false))
+      return
+    }
+    const s = document.createElement('script')
+    s.src = RAZORPAY_SCRIPT
+    s.async = true
+    s.onload = () => resolve(!!window.Razorpay)
+    s.onerror = () => resolve(false)
+    document.body.appendChild(s)
+  })
+}
+
 const validEmail = (e) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { items, subtotal, savings, clear } = useCart()
+  const { items, subtotal, savings, clear, count } = useCart()
+  const { user } = useUser()
   const shipping = subtotal === 0 ? 0 : subtotal >= 4999 ? 0 : 199
   const total = subtotal + shipping
 
@@ -60,6 +85,47 @@ export default function CheckoutPage() {
     state: '',
   })
 
+  // Saved addresses (signed-in users only)
+  const [addresses, setAddresses] = useState([])
+  const [saveForLater, setSaveForLater] = useState(true)
+  useEffect(() => {
+    if (!user) return
+    fetch('/api/account/addresses').then((r) => r.json()).then((d) => {
+      if (d.ok && Array.isArray(d.addresses)) {
+        setAddresses(d.addresses)
+        // Prefill from the most recent address on first load.
+        if (d.addresses[0] && !form.address) {
+          const a = d.addresses[0]
+          setForm((f) => ({
+            ...f,
+            email: f.email || user.email,
+            fullName: a.fullName || user.name || '',
+            phone: a.phone || '',
+            address: a.address || '',
+            address2: a.address2 || '',
+            city: a.city || '',
+            state: a.state || '',
+            pincode: a.pincode || '',
+          }))
+        }
+      }
+    }).catch(() => {})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+
+  const useAddress = (a) => {
+    setForm((f) => ({
+      ...f,
+      fullName: a.fullName || '',
+      phone: a.phone || '',
+      address: a.address || '',
+      address2: a.address2 || '',
+      city: a.city || '',
+      state: a.state || '',
+      pincode: a.pincode || '',
+    }))
+  }
+
   // Email verification
   const [otpSent, setOtpSent] = useState(false)
   const [otp, setOtp] = useState('')
@@ -70,7 +136,16 @@ export default function CheckoutPage() {
   const [devCode, setDevCode] = useState('')
 
   const [shipMethod, setShipMethod] = useState('standard')
-  const [payMethod, setPayMethod] = useState('upi')
+  const [payMethod, setPayMethod] = useState('razorpay')
+  const [razorpayConfig, setRazorpayConfig] = useState({ enabled: true, configured: false, keyId: null })
+
+  useEffect(() => {
+    fetch('/api/razorpay/config').then((r) => r.json()).then((d) => {
+      if (d.ok) setRazorpayConfig(d)
+    }).catch(() => {})
+    // Preload the SDK so the popup is instant when the user clicks Pay.
+    loadRazorpayScript()
+  }, [])
   const [card, setCard] = useState({ number: '', name: '', expiry: '', cvv: '' })
   const [bank, setBank] = useState(banks[0])
   const [emi, setEmi] = useState(6)
@@ -159,6 +234,127 @@ export default function CheckoutPage() {
     setVerifying(false)
   }
 
+  const placeOrder = async () => {
+    const addressPayload = {
+      fullName: form.fullName,
+      phone: form.phone,
+      address: form.address,
+      address2: form.address2,
+      city: form.city,
+      state: form.state,
+      pincode: form.pincode,
+    }
+    const res = await fetch('/api/place-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: form.email,
+        items,
+        address: addressPayload,
+        payment: PAY_LABEL[payMethod] || 'Online',
+        totals: { subtotal, shipping, total, savings },
+      }),
+    })
+    const data = await res.json()
+    if (!res.ok || !data.ok) throw new Error(data.error || 'Could not place order.')
+    if (user && saveForLater) {
+      fetch('/api/account/addresses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(addressPayload),
+      }).catch(() => {})
+    }
+    return data
+  }
+
+  const payWithRazorpay = async () => {
+    // 1) Create a Razorpay order on the server.
+    const orderRes = await fetch('/api/razorpay/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: form.email,
+        amount: total,
+        items,
+        address: {
+          fullName: form.fullName,
+          phone: form.phone,
+          address: form.address,
+          address2: form.address2,
+          city: form.city,
+          state: form.state,
+          pincode: form.pincode,
+        },
+      }),
+    })
+    const orderData = await orderRes.json()
+    if (!orderRes.ok || !orderData.ok) {
+      throw new Error(orderData.error || 'Could not start payment.')
+    }
+
+    // 2) Demo mode (no live keys) — skip the popup, simulate success.
+    if (!orderData.configured) {
+      const fakePaymentId = 'pay_demo_' + Math.random().toString(36).slice(2, 12)
+      const fakeSignature = 'demo_' + Math.random().toString(36).slice(2)
+      const verify = await fetch('/api/razorpay/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: orderData.order.id,
+          paymentId: fakePaymentId,
+          signature: fakeSignature,
+        }),
+      }).then((r) => r.json())
+      if (!verify.ok) throw new Error('Payment verification failed.')
+      return { mode: 'demo', paymentId: fakePaymentId }
+    }
+
+    // 3) Live mode — open the Razorpay checkout popup.
+    const ok = await loadRazorpayScript()
+    if (!ok) throw new Error('Could not load Razorpay. Check your connection.')
+
+    return new Promise((resolve, reject) => {
+      const rzp = new window.Razorpay({
+        key: orderData.keyId,
+        order_id: orderData.order.id,
+        amount: orderData.order.amount,
+        currency: orderData.order.currency || 'INR',
+        name: 'Shanky',
+        description: `${items.length} item${items.length === 1 ? '' : 's'} · Order`,
+        prefill: {
+          name: form.fullName,
+          email: form.email,
+          contact: form.phone,
+        },
+        theme: { color: '#c94f2a' },
+        modal: {
+          ondismiss: () => reject(new Error('Payment cancelled.')),
+        },
+        handler: async (resp) => {
+          try {
+            const v = await fetch('/api/razorpay/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                orderId: resp.razorpay_order_id,
+                paymentId: resp.razorpay_payment_id,
+                signature: resp.razorpay_signature,
+              }),
+            }).then((r) => r.json())
+            if (!v.ok) return reject(new Error(v.error || 'Payment verification failed.'))
+            resolve({ mode: 'live', paymentId: resp.razorpay_payment_id })
+          } catch (e) {
+            reject(e)
+          }
+        },
+      })
+      rzp.on?.('payment.failed', (resp) => {
+        reject(new Error(resp?.error?.description || 'Payment failed.'))
+      })
+      rzp.open()
+    })
+  }
+
   const goNext = async () => {
     setOrderError('')
     if (step === 1) {
@@ -182,31 +378,12 @@ export default function CheckoutPage() {
       }
       setProcessing(true)
       try {
-        const res = await fetch('/api/place-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: form.email,
-            items,
-            address: {
-              fullName: form.fullName,
-              phone: form.phone,
-              address: form.address,
-              address2: form.address2,
-              city: form.city,
-              state: form.state,
-              pincode: form.pincode,
-            },
-            payment: PAY_LABEL[payMethod] || 'Online',
-            totals: { subtotal, shipping, total, savings },
-          }),
-        })
-        const data = await res.json()
-        if (!res.ok || !data.ok) {
-          setOrderError(data.error || 'Could not place order.')
-          setProcessing(false)
-          return
+        // Razorpay path: collect payment first, then record the order.
+        if (payMethod === 'razorpay') {
+          await payWithRazorpay()
         }
+        const data = await placeOrder()
+        events.purchase(data.orderId, total)
         clear()
         const params = new URLSearchParams({
           id: data.orderId,
@@ -216,7 +393,7 @@ export default function CheckoutPage() {
         if (data.emailSent === false) params.set('emailWarn', '1')
         router.push(`/order-confirmed?${params.toString()}`)
       } catch (e) {
-        setOrderError('Network error. Try again.')
+        setOrderError(e?.message || 'Network error. Try again.')
         setProcessing(false)
       }
     }
@@ -252,6 +429,25 @@ export default function CheckoutPage() {
           {step === 1 && (
             <div className="reveal visible">
               <h2 className="italiana" style={{ fontSize: '2rem', marginBottom: 20 }}>Where shall we send it?</h2>
+
+              {addresses.length > 0 && (
+                <div className="saved-address-row">
+                  <p className="section-label" style={{ marginBottom: 10 }}>Saved addresses</p>
+                  <div className="saved-address-list">
+                    {addresses.map((a) => (
+                      <button
+                        type="button"
+                        key={a.id}
+                        onClick={() => useAddress(a)}
+                        className="saved-address-pill"
+                      >
+                        <strong>{a.label || 'Home'}</strong>
+                        <span>{a.fullName} · {a.city} · {a.pincode}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Email + verification */}
               <div className={`field ${form.email ? 'filled' : ''}`} style={{ marginBottom: 8 }}>
@@ -317,6 +513,16 @@ export default function CheckoutPage() {
                 <Field label="Pincode" value={form.pincode} onChange={update('pincode')} />
               </div>
               <Field label="State" value={form.state} onChange={update('state')} />
+              {user && (
+                <label className="save-address-toggle">
+                  <input
+                    type="checkbox"
+                    checked={saveForLater}
+                    onChange={(e) => setSaveForLater(e.target.checked)}
+                  />
+                  <span>Save this address for next time.</span>
+                </label>
+              )}
             </div>
           )}
 
@@ -366,6 +572,46 @@ export default function CheckoutPage() {
           {step === 3 && (
             <div className="reveal visible">
               <h2 className="italiana" style={{ fontSize: '2rem', marginBottom: 20 }}>How would you like to pay?</h2>
+
+              {/* RAZORPAY (recommended) */}
+              <label className={`pay-method pay-method-razorpay ${payMethod === 'razorpay' ? 'active' : ''}`}>
+                <div className="pay-method-head">
+                  <div className="pay-method-name">
+                    <span className="pay-radio" />
+                    <span>
+                      Pay securely via Razorpay
+                      <small style={{ display: 'block', fontWeight: 300, color: '#7a7060', marginTop: 2, fontSize: '0.78rem', letterSpacing: 0 }}>
+                        UPI · Cards · Net Banking · Wallets · EMI — one popup, all options.
+                      </small>
+                    </span>
+                  </div>
+                  <span className="pay-method-badge">Recommended</span>
+                </div>
+                <input
+                  type="radio"
+                  name="pay"
+                  checked={payMethod === 'razorpay'}
+                  onChange={() => setPayMethod('razorpay')}
+                  style={{ position: 'absolute', opacity: 0 }}
+                />
+                <div className="pay-body">
+                  <div className="pay-logos" style={{ marginBottom: 10 }}>
+                    {['UPI', 'Visa', 'MC', 'RuPay', 'Amex', 'Paytm', 'NetBank'].map((p) => (
+                      <span key={p} className="pay-logo">{p}</span>
+                    ))}
+                  </div>
+                  <p style={{ fontSize: '0.8rem', color: '#2a2a2a', lineHeight: 1.7 }}>
+                    🔒 PCI-DSS Level 1 secure payments. Razorpay opens a single popup
+                    where you can pay with any UPI app, card, wallet, net banking, or
+                    pay-later — and we never see your card details.
+                  </p>
+                  {!razorpayConfig.configured && (
+                    <p className="razorpay-demo-note">
+                      Demo mode · payment will be simulated until <code>RAZORPAY_KEY_ID</code> and <code>RAZORPAY_KEY_SECRET</code> are set in your environment.
+                    </p>
+                  )}
+                </div>
+              </label>
 
               {/* UPI */}
               <label className={`pay-method ${payMethod === 'upi' ? 'active' : ''}`}>

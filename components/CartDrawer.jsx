@@ -3,9 +3,12 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { useCart } from './CartContext'
 import { formatPrice } from '@/lib/products'
+import { SHIPPING_THRESHOLD, events } from '@/lib/analytics'
 
 export default function CartDrawer() {
   const { items, drawerOpen, setDrawerOpen, removeItem, updateQty, subtotal, savings, count } = useCart()
+  const remaining = Math.max(0, SHIPPING_THRESHOLD - subtotal)
+  const pct = subtotal === 0 ? 0 : Math.min(100, Math.round((subtotal / SHIPPING_THRESHOLD) * 100))
 
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? 'hidden' : ''
@@ -95,6 +98,19 @@ export default function CartDrawer() {
 
         {items.length > 0 && (
           <div className="cart-foot">
+            <div className="ship-meter" aria-label="Free shipping progress">
+              <div className="ship-meter-text">
+                {remaining === 0 ? (
+                  <span><strong style={{ color: '#c94f2a' }}>✦ Free shipping unlocked.</strong> Delivered free across India.</span>
+                ) : (
+                  <span>Add <strong>{formatPrice(remaining)}</strong> more for <strong>free shipping</strong>.</span>
+                )}
+              </div>
+              <div className="ship-meter-track" aria-hidden>
+                <div className="ship-meter-fill" style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+
             {savings > 0 && (
               <div className="cart-foot-row cart-foot-savings">
                 <span>You save</span>
@@ -109,11 +125,14 @@ export default function CartDrawer() {
               {savings > 0
                 ? `Saving ${formatPrice(savings)} vs. MRP · `
                 : ''}
-              Shipping &amp; taxes calculated at checkout.
+              Taxes calculated at checkout.
             </p>
             <Link
               href="/checkout"
-              onClick={() => setDrawerOpen(false)}
+              onClick={() => {
+                setDrawerOpen(false)
+                events.beginCheckout(subtotal, count)
+              }}
               className="btn-primary"
               style={{ display: 'block', textAlign: 'center', marginTop: 14 }}
             >
