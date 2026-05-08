@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server'
-import { promises as fs } from 'fs'
-import path from 'path'
 import { isAdmin } from '@/lib/auth'
+import { uploadProductImage, storageConfigured } from '@/lib/supabaseStorage'
 
 export const runtime = 'nodejs'
 
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads')
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif']
 
 const safeName = (s) =>
@@ -17,6 +15,17 @@ const safeName = (s) =>
 
 export async function POST(req) {
   if (!isAdmin()) return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+
+  if (!storageConfigured()) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          'Supabase Storage is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment.',
+      },
+      { status: 500 }
+    )
+  }
 
   let formData
   try {
@@ -30,8 +39,6 @@ export async function POST(req) {
     return NextResponse.json({ ok: false, error: 'No file uploaded' }, { status: 400 })
   }
 
-  await fs.mkdir(UPLOAD_DIR, { recursive: true })
-
   const urls = []
   for (const file of files) {
     if (!ALLOWED.includes(file.type)) {
@@ -44,10 +51,19 @@ export async function POST(req) {
     if (buf.length > 8 * 1024 * 1024) {
       return NextResponse.json({ ok: false, error: 'Max 8 MB per image' }, { status: 413 })
     }
-    const filename = `${Date.now()}-${safeName(file.name)}`
-    const dest = path.join(UPLOAD_DIR, filename)
-    await fs.writeFile(dest, buf)
-    urls.push(`/uploads/${filename}`)
+    try {
+      const url = await uploadProductImage({
+        buffer: buf,
+        filename: safeName(file.name),
+        contentType: file.type,
+      })
+      urls.push(url)
+    } catch (e) {
+      return NextResponse.json(
+        { ok: false, error: e.message || 'Storage upload failed' },
+        { status: 502 }
+      )
+    }
   }
 
   return NextResponse.json({ ok: true, urls })

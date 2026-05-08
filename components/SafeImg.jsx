@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // Curated MALE-only fallbacks (verified working, men's editorial / neutral).
 const FALLBACKS = [
@@ -18,7 +18,10 @@ const pickFallback = (key) => {
  */
 export default function SafeImg({ src, alt = '', fallbackKey, className = '', style, ...rest }) {
   const [current, setCurrent] = useState(src)
-  const [erred, setErred] = useState(false)
+
+  useEffect(() => {
+    setCurrent(src)
+  }, [src])
 
   return (
     <img
@@ -28,9 +31,8 @@ export default function SafeImg({ src, alt = '', fallbackKey, className = '', st
       className={className}
       style={style}
       onError={() => {
-        if (erred) return
-        setErred(true)
-        setCurrent(pickFallback(fallbackKey || src || alt))
+        const fb = pickFallback(fallbackKey || src || alt)
+        if (current !== fb) setCurrent(fb)
       }}
     />
   )

@@ -16,6 +16,9 @@ const slugify = (s) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
 
+const SLOT_ROLES = ['Lead · Front', 'Back', 'Side', 'Detail', 'On-model']
+const RECOMMENDED_IMAGES = 5
+
 export default function AdminProductForm({ initial, mode = 'create' }) {
   const router = useRouter()
   const { toast, confirm } = useAdminUI()
@@ -24,6 +27,8 @@ export default function AdminProductForm({ initial, mode = 'create' }) {
   const [busy, setBusy] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
+  const [reorderFrom, setReorderFrom] = useState(null)
+  const [reorderOver, setReorderOver] = useState(null)
 
   const [form, setForm] = useState(() => ({
     slug: initial?.slug || '',
@@ -75,6 +80,18 @@ export default function AdminProductForm({ initial, mode = 'create' }) {
       const j = i + dir
       if (j < 0 || j >= next.length) return f
       ;[next[i], next[j]] = [next[j], next[i]]
+      return { ...f, images: next }
+    })
+  }
+
+  const reorderTo = (from, to) => {
+    if (from === to || from == null || to == null) return
+    setForm((f) => {
+      if (from < 0 || from >= f.images.length) return f
+      const target = Math.min(to, f.images.length - 1)
+      const next = [...f.images]
+      const [pick] = next.splice(from, 1)
+      next.splice(target, 0, pick)
       return { ...f, images: next }
     })
   }
@@ -371,7 +388,12 @@ export default function AdminProductForm({ initial, mode = 'create' }) {
             onDrop={onDrop}
           >
             <div className="admin-images-head">
-              <span>Images <small>({form.images.length})</small></span>
+              <span>
+                Images
+                <small className={form.images.length >= RECOMMENDED_IMAGES ? 'is-complete' : ''}>
+                  {form.images.length} / {RECOMMENDED_IMAGES}
+                </small>
+              </span>
               <div className="admin-images-actions">
                 <button type="button" onClick={addImageUrl} className="admin-btn-ghost">+ URL</button>
                 <button type="button" onClick={onPickFile} className="admin-btn-ghost" disabled={uploading}>
@@ -388,35 +410,87 @@ export default function AdminProductForm({ initial, mode = 'create' }) {
               </div>
             </div>
 
-            {form.images.length === 0 ? (
-              <div className="admin-images-empty">
-                <div className="admin-dropzone-icon">⤓</div>
-                <p><strong>Drag images here</strong> — or click "+ Upload" / "+ URL".</p>
-                <p className="admin-mute">PNG, JPEG, WebP, GIF, AVIF · up to 8 MB each.</p>
-              </div>
-            ) : (
-              <ul className="admin-images-list">
-                {form.images.map((src, i) => (
-                  <li key={src + i} className="admin-image-item">
-                    <img src={src} alt="" />
-                    <div className="admin-image-meta">
-                      <span className={`admin-image-pos ${i === 0 ? 'is-lead' : ''}`}>
-                        {i === 0 ? '★ Lead' : `#${i + 1}`}
-                      </span>
-                      <span className="admin-image-url" title={src}>{src}</span>
-                    </div>
-                    <div className="admin-image-actions">
-                      {i !== 0 && (
-                        <button type="button" onClick={() => setLeadImage(i)} title="Set as lead">★</button>
-                      )}
-                      <button type="button" onClick={() => moveImage(i, -1)} disabled={i === 0} title="Move up">↑</button>
-                      <button type="button" onClick={() => moveImage(i, 1)} disabled={i === form.images.length - 1} title="Move down">↓</button>
-                      <button type="button" onClick={() => removeImage(i)} className="admin-link-danger" title="Remove">×</button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="admin-images-progress" aria-hidden>
+              <span
+                className="admin-images-progress-bar"
+                style={{ width: `${Math.min(100, (form.images.length / RECOMMENDED_IMAGES) * 100)}%` }}
+              />
+            </div>
+
+            <div className="admin-images-grid">
+              {Array.from({ length: Math.max(RECOMMENDED_IMAGES, form.images.length) }).map((_, i) => {
+                const src = form.images[i]
+                const isFilled = Boolean(src)
+                const role = SLOT_ROLES[i] || `Photo #${i + 1}`
+                const isDragging = reorderFrom === i
+                const isOver = reorderOver === i && reorderFrom !== null && reorderFrom !== i
+                const tileClass =
+                  `admin-image-tile ${isFilled ? 'is-filled' : 'is-empty'} ${i === 0 && isFilled ? 'is-lead' : ''} ${isDragging ? 'is-dragging' : ''} ${isOver ? 'is-over' : ''}`
+                return (
+                  <div
+                    key={i}
+                    className={tileClass}
+                    draggable={isFilled}
+                    onDragStart={(e) => {
+                      if (!isFilled) return
+                      setReorderFrom(i)
+                      e.dataTransfer.effectAllowed = 'move'
+                      e.dataTransfer.setData('text/x-image-index', String(i))
+                    }}
+                    onDragEnter={(e) => {
+                      if (reorderFrom === null) return
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setReorderOver(i)
+                    }}
+                    onDragOver={(e) => {
+                      if (reorderFrom === null) return
+                      e.preventDefault()
+                      e.stopPropagation()
+                      e.dataTransfer.dropEffect = 'move'
+                    }}
+                    onDrop={(e) => {
+                      if (reorderFrom === null) return
+                      e.preventDefault()
+                      e.stopPropagation()
+                      reorderTo(reorderFrom, i)
+                      setReorderFrom(null)
+                      setReorderOver(null)
+                    }}
+                    onDragEnd={() => {
+                      setReorderFrom(null)
+                      setReorderOver(null)
+                    }}
+                  >
+                    {isFilled ? (
+                      <>
+                        <img src={src} alt="" title={src} />
+                        <div className="admin-image-tile-pos">
+                          {i === 0 ? '★ Lead' : `#${i + 1}`}
+                        </div>
+                        <div className="admin-image-tile-actions">
+                          {i !== 0 && (
+                            <button type="button" onClick={() => setLeadImage(i)} title="Set as lead image" aria-label="Set as lead image">★</button>
+                          )}
+                          <button type="button" onClick={() => removeImage(i)} title="Remove image" aria-label="Remove image">×</button>
+                        </div>
+                      </>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={onPickFile}
+                        className="admin-image-tile-empty-btn"
+                        disabled={uploading}
+                        aria-label={`Add ${role} photo`}
+                      >
+                        <span className="admin-image-tile-plus">+</span>
+                        <span className="admin-image-tile-role">{role}</span>
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
 
             {dragActive && (
               <div className="admin-dropzone-overlay">
@@ -428,7 +502,8 @@ export default function AdminProductForm({ initial, mode = 'create' }) {
             )}
 
             <p className="admin-hint">
-              Lead image shows on the collection card. Add 3–4 alternates for the gallery on the product page.
+              Recommended for clothing: <strong>5 photos</strong> — front, back, side, detail, on-model.
+              Drag tiles to reorder · the first tile is the lead image shown on /collection.
             </p>
           </div>
         </div>

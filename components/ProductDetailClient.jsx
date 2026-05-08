@@ -17,8 +17,6 @@ export default function ProductDetailClient({ product, related }) {
   const [color, setColor] = useState(product.colors[0])
   const [openAcc, setOpenAcc] = useState('details')
   const [adding, setAdding] = useState(false)
-  const [zoom, setZoom] = useState(false)
-  const [zoomXY, setZoomXY] = useState({ x: 50, y: 50 })
   const [showSizeFinder, setShowSizeFinder] = useState(false)
   const [bundleSelected, setBundleSelected] = useState(() => new Set(related.map((r) => r.slug)))
   const { addItem } = useCart()
@@ -74,13 +72,6 @@ export default function ProductDetailClient({ product, related }) {
     setTimeout(() => setAdding(false), 700)
   }
 
-  const onZoomMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width) * 100
-    const y = ((e.clientY - rect.top) / rect.height) * 100
-    setZoomXY({ x, y })
-  }
-
   const toggleBundle = (slug) => {
     setBundleSelected((prev) => {
       const next = new Set(prev)
@@ -106,13 +97,8 @@ export default function ProductDetailClient({ product, related }) {
     <>
       <div className="pdp">
         <div className="pdp-gallery" ref={galleryRef}>
-          <div
-            className={`pdp-img-main reveal ${zoom ? 'zooming' : ''}`}
-            onMouseEnter={() => setZoom(true)}
-            onMouseLeave={() => setZoom(false)}
-            onMouseMove={onZoomMove}
-            style={zoom ? { '--zx': `${zoomXY.x}%`, '--zy': `${zoomXY.y}%` } : undefined}
-          >
+          <div className="reveal">
+          <div className="pdp-img-main">
             <SafeImg src={product.images[activeImg]} alt={product.name} fallbackKey={`${product.slug}-${activeImg}`} />
             <button
               type="button"
@@ -139,6 +125,7 @@ export default function ProductDetailClient({ product, related }) {
             <span className="pdp-img-counter" aria-hidden>
               {activeImg + 1} / {product.images.length}
             </span>
+          </div>
           </div>
           <div className="pdp-thumbs">
             {product.images.map((img, i) => (

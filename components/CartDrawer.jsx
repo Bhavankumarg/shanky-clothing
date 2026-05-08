@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useCart } from './CartContext'
 import { formatPrice } from '@/lib/products'
 import { SHIPPING_THRESHOLD, events } from '@/lib/analytics'
+import SafeImg from './SafeImg'
 
 export default function CartDrawer() {
   const { items, drawerOpen, setDrawerOpen, removeItem, updateQty, subtotal, savings, count } = useCart()
@@ -57,7 +58,7 @@ export default function CartDrawer() {
                   onClick={() => setDrawerOpen(false)}
                   className="cart-item-img"
                 >
-                  <img src={it.image} alt={it.name} />
+                  <SafeImg src={it.image} alt={it.name} fallbackKey={`cart-${it.slug}`} />
                 </Link>
                 <div className="cart-item-info">
                   <div className="cart-item-row">

@@ -1,11 +1,16 @@
 node_modules
 .next
+.env
 .env.local
 .env*.local
 
-# NOTE: data/products.json IS tracked. The store reads from this file on every
-# request — it must ship with the deployment so Vercel/serverless reads work.
-# Run admin locally → make catalog edits → commit data/products.json → deploy.
-
-# NOTE: public/uploads/ IS tracked. Admin-uploaded images live there and need
-# to be present in the deployment bundle for the storefront to serve them.
+# All persistent data now lives in Supabase Postgres + Storage. The local
+# data/*.json files and public/uploads/* are dev snapshots only — not source
+# of truth, not safe to commit (PII, passwords, etc.).
+data/users.json
+data/orders.json
+data/coupons.json
+data/theme.json
+data/products.json
+public/uploads/*
+!public/uploads/.gitkeep

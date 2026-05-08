@@ -5,6 +5,7 @@ import { useCart } from '@/components/CartContext'
 import { formatPrice } from '@/lib/products'
 import { SHIPPING_THRESHOLD, SHIPPING_FEE, events } from '@/lib/analytics'
 import RecentlyViewed from '@/components/RecentlyViewed'
+import SafeImg from '@/components/SafeImg'
 
 export default function CartPage() {
   const { items, removeItem, updateQty, subtotal, savings, hydrated, count } = useCart()
@@ -96,7 +97,7 @@ export default function CartPage() {
           {items.map((it) => (
             <div key={it.id} className="cart-row">
               <Link href={`/collection/${it.slug}`} className="cart-row-img">
-                <img src={it.image} alt={it.name} />
+                <SafeImg src={it.image} alt={it.name} fallbackKey={`cart-${it.slug}`} />
               </Link>
               <div>
                 <Link
