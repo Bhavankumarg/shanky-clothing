@@ -4681,6 +4681,137 @@ html[data-native-cursor="1"] textarea { cursor: text; }
 }
 .size-finder-secondary:hover { color: var(--rust); }
 
+/* Mode tabs (Quick / Measure) */
+.size-finder-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(10,10,10,0.10);
+  margin-bottom: 18px;
+}
+.size-finder-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px 8px 12px;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.size-finder-tab:hover { color: var(--black); }
+.size-finder-tab.active {
+  color: var(--rust);
+  border-bottom-color: var(--rust);
+  font-weight: 600;
+}
+
+/* Unit toggle (cm / inch) */
+.size-finder-unit-toggle {
+  display: inline-flex;
+  align-self: flex-end;
+  border: 1px solid rgba(10,10,10,0.18);
+  overflow: hidden;
+  margin-bottom: -6px;
+}
+.size-finder-unit {
+  padding: 4px 12px;
+  background: transparent;
+  border: none;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.size-finder-unit.active {
+  background: var(--black);
+  color: var(--cream);
+}
+.size-finder-unit-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  min-width: 30px;
+}
+
+/* Number input */
+.size-finder-num {
+  width: 96px;
+  padding: 8px 10px;
+  font-size: 1rem;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.06em;
+  background: #fff;
+  border: 1px solid rgba(10,10,10,0.18);
+  text-align: center;
+  color: var(--black);
+}
+.size-finder-num:focus {
+  outline: none;
+  border-color: var(--rust);
+}
+.size-finder-field > span small {
+  margin-left: 6px;
+  font-size: 0.66rem;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Result breakdown */
+.size-finder-breakdown {
+  background: #faf6ee;
+  border: 1px solid rgba(10,10,10,0.06);
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 24px;
+  margin-top: -6px;
+}
+.size-finder-bd-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.size-finder-bd-row strong {
+  color: var(--black);
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.08em;
+  font-size: 0.92rem;
+}
+@media (max-width: 540px) {
+  .size-finder-breakdown { grid-template-columns: 1fr; }
+}
+
+/* Pattern callout */
+.size-finder-pattern {
+  font-size: 0.86rem;
+  color: var(--black);
+  line-height: 1.65;
+  padding: 12px 14px;
+  border-left: 2px solid var(--rust);
+  background: rgba(201,79,42,0.04);
+}
+.size-finder-pattern-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 700;
+  margin-right: 8px;
+}
+
 /* ── RECENTLY VIEWED ────────────────────────────────────────────────────── */
 .recently-viewed { padding: 0 60px; }
 @media (max-width: 768px) { .recently-viewed { padding: 0 22px; } }
